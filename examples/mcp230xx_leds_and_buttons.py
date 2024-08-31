@@ -4,6 +4,7 @@
 
 import board
 import busio
+import time
 from digitalio import Direction, Pull
 from adafruit_mcp230xx.mcp23017 import MCP23017
 
@@ -17,14 +18,14 @@ mcp = MCP23017(i2c)
 # pins.  Specify the new address with a keyword parameter:
 # mcp = MCP23017(i2c, address=0x21)  # MCP23017 w/ A0 set
 
-# Make a list of all the port A pins (a.k.a 0-7)
+# Make a list of RGB LCD1602 port B LED pins (a.k.a 13-15)
 port_a_pins = []
-for pin in range(0, 8):
+for pin in range(13, 16):
     port_a_pins.append(mcp.get_pin(pin))
 
-# Make a list of all the port B pins (a.k.a 8-15)
+# Make a list of RGB LCD1602 port B Key pins (a.k.a 8-12)
 port_b_pins = []
-for pin in range(8, 16):
+for pin in range(8, 13):
     port_b_pins.append(mcp.get_pin(pin))
 
 # Set all the port A pins to output
@@ -36,8 +37,8 @@ for pin in port_b_pins:
     pin.direction = Direction.INPUT
     pin.pull = Pull.UP
 
-# Turn on all port A pins for 1/10 of a second
-# while True:
+# Turn on RGB LCD1602 port B pin5, Green LED for 1/10 of a second
+#while True:
 #    for pin in port_a_pins:
 #        pin.value = True    # turn LED on!
 #        time.sleep(0.1)     # wait 0.1 seconds
@@ -45,9 +46,10 @@ for pin in port_b_pins:
 
 while True:
     for num, button in enumerate(port_b_pins):
-        if not button.value:
+        if button.value:
             print("Button #", num, "pressed!")
-            # turn on matching port A pin
-            port_a_pins[num].value = True  # turn LED on!
+            for count, led in enumerate(port_a_pins):
+                port_a_pins[count].value = True  # turn LED on!
         else:
-            port_a_pins[num].value = False  # turn LED off
+            for count, led in enumerate(port_a_pins):
+                port_a_pins[count].value = False  # turn LED off

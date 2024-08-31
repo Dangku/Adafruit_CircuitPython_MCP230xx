@@ -17,14 +17,14 @@ mcp = MCP23017(i2c)
 # pins.  Specify the new address with a keyword parameter:
 # mcp = MCP23017(i2c, address=0x21)  # MCP23017 w/ A0 set
 
-# Make a list of all the port A pins (a.k.a 0-7)
+# Make a list of RGB LCD1602 port B LED pins (a.k.a 13-15)
 port_a_pins = []
-for pin in range(0, 8):
+for pin in range(13, 16):
     port_a_pins.append(mcp.get_pin(pin))
 
-# Make a list of all the port B pins (a.k.a 8-15)
+# Make a list of RGB LCD1602 port B Key pins (a.k.a 8-12)
 port_b_pins = []
-for pin in range(8, 16):
+for pin in range(8, 13):
     port_b_pins.append(mcp.get_pin(pin))
 
 # Set all the port A pins to output
@@ -36,8 +36,8 @@ for pin in port_b_pins:
     pin.direction = Direction.INPUT
     pin.pull = Pull.UP
 
-# Set up to check all the port B pins (pins 8-15) w/interrupts!
-mcp.interrupt_enable = 0xFF00  # INTerrupt ENable top 8 bits
+# Set up to check all the port B pins (pins 8-13) w/interrupts!
+mcp.interrupt_enable = 0x3F00  # INTerrupt ENable top 8 bits
 # If intcon is set to 0's we will get interrupts on
 # both button presses and button releases
 mcp.interrupt_configuration = 0x0000  # interrupt on any change
@@ -47,16 +47,17 @@ mcp.interrupt_configuration = 0x0000  # interrupt on any change
 # mcp.interrupt_configuration = 0xFF00         # notify pin value
 # mcp.default_value = 0xFF00         # default value is 'high' so notify whenever 'low'
 
-# connect the IRQ B pin to D4
-irq_b = DigitalInOut(board.D4)
+# connect the IRQ B pin to D22, hw disconnected.
+irq_b = DigitalInOut(board.D22)
 
 while True:
     if not irq_b.value:
         print("IRQ B went off")
         for num, button in enumerate(port_b_pins):
-            if not button.value:
+            if button.value:
                 print("Button #", num, "pressed!")
-                # turn on matching port A pin
-                port_a_pins[num].value = True  # turn LED on!
+                for count, led in enumerate(port_a_pins):
+                    port_a_pins[count].value = True  # turn LED on!
             else:
-                port_a_pins[num].value = False  # turn LED off
+                for count, led in enumerate(port_a_pins):
+                    port_a_pins[count].value = False  # turn LED off
