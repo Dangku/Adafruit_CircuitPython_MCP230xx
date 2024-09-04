@@ -11,7 +11,7 @@ import board
 import busio
 import digitalio
 
-#from adafruit_mcp230xx.mcp23008 import MCP23008
+# from adafruit_mcp230xx.mcp23008 import MCP23008
 
 from adafruit_mcp230xx.mcp23017 import MCP23017
 
@@ -21,7 +21,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 
 # Create an instance of either the MCP23008 or MCP23017 class depending on
 # which chip you're using:
-#mcp = MCP23008(i2c)  # MCP23008
+# mcp = MCP23008(i2c)  # MCP23008
 mcp = MCP23017(i2c)  # MCP23017
 
 # Optionally change the address of the device if you set any of the A0, A1, A2
@@ -36,8 +36,8 @@ mcp = MCP23017(i2c)  # MCP23017
 # 0 to 15 for the GPIOA0...GPIOA7, GPIOB0...GPIOB7 pins (i.e. pin 12 is GPIOB4).
 
 # MCP23008
-#pin0 = mcp.get_pin(0)
-#pin1 = mcp.get_pin(1)
+# pin0 = mcp.get_pin(0)
+# pin1 = mcp.get_pin(1)
 
 # MCP23017 RGB1602, pin0->Green LED, pin1->Key_Down
 pin0 = mcp.get_pin(13)

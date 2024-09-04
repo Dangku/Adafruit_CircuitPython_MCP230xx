@@ -2,9 +2,9 @@
 #
 # SPDX-License-Identifier: MIT
 
+# import time
 import board
 import busio
-import time
 from digitalio import Direction, Pull
 from adafruit_mcp230xx.mcp23017 import MCP23017
 
@@ -38,7 +38,7 @@ for pin in port_b_pins:
     pin.pull = Pull.UP
 
 # Turn on RGB LCD1602 port B pin5, Green LED for 1/10 of a second
-#while True:
+# while True:
 #    for pin in port_a_pins:
 #        pin.value = True    # turn LED on!
 #        time.sleep(0.1)     # wait 0.1 seconds
@@ -48,8 +48,8 @@ while True:
     for num, button in enumerate(port_b_pins):
         if button.value:
             print("Button #", num, "pressed!")
-            for count, led in enumerate(port_a_pins):
+            for count in enumerate(port_a_pins):
                 port_a_pins[count].value = True  # turn LED on!
         else:
-            for count, led in enumerate(port_a_pins):
+            for count in enumerate(port_a_pins):
                 port_a_pins[count].value = False  # turn LED off

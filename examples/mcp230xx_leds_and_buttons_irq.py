@@ -56,8 +56,8 @@ while True:
         for num, button in enumerate(port_b_pins):
             if button.value:
                 print("Button #", num, "pressed!")
-                for count, led in enumerate(port_a_pins):
+                for count in enumerate(port_a_pins):
                     port_a_pins[count].value = True  # turn LED on!
             else:
-                for count, led in enumerate(port_a_pins):
+                for count in enumerate(port_a_pins):
                     port_a_pins[count].value = False  # turn LED off
