@@ -36,7 +36,7 @@ class MCP23XXX:
         baudrate: int = 100000,
     ) -> None:
         if chip_select is None:
-            self._device = i2c_device.I2CDevice(bus_device, address)
+            self._device = i2c_device.I2CDevice(bus_device, address, probe=False)
         else:
             self._device = spi_device.SPIDevice(
                 bus_device, chip_select, baudrate=baudrate
